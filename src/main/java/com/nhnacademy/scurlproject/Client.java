@@ -14,8 +14,8 @@ import org.apache.commons.logging.LogFactory;
 
 public class Client {
     private static final Log log = LogFactory.getLog(Client.class);
-    public void printGetBody(String request, boolean isHeader,
-                             List<String> headerAppending) throws IOException {
+    public void printBody(String request, boolean isHeader,
+                          List<String> headerAppending, String postContents) throws IOException {
         String line;
         Args args = new Args();
         Socket socket = new Socket(MainClass.getUrl(), MainClass.getPort());
@@ -26,18 +26,19 @@ public class Client {
             request="GET";
         }
 
+        writeHeader(request, out);
         if (!headerAppending.isEmpty()) {
-            out.writeBytes(request +" /" + MainClass.getPath() + " HTTP/1.1\nHost:" + MainClass.getUrl() +
-                "\nUser-Agent: curl/7.68.0\n");
             for (String header : headerAppending) {
                 out.writeBytes(header + "\n");
             }
-            out.writeBytes("\n");
-
-        } else {
-            out.writeBytes(
-                request + " /" + MainClass.getPath() + " HTTP/1.1\nHost:" + MainClass.getUrl() + "\nUser-Agent: curl/7.68.0\n\n");
         }
+
+        if(postContents != null){
+            out.writeBytes("Content-Length: "+ postContents.length() + "\n");
+            out.writeBytes("\n");
+            out.writeBytes(postContents + "\n");
+        }
+        out.writeBytes("\n");
         out.flush();
 
         try (BufferedReader read = new BufferedReader(new InputStreamReader(in))) {
@@ -51,6 +52,11 @@ public class Client {
 
             }
         }
+    }
+
+    private void writeHeader(String request, DataOutputStream out) throws IOException {
+        out.writeBytes(request +" /" + MainClass.getPath() + " HTTP/1.1\nHost:" + MainClass.getUrl() +
+            "\nUser-Agent: curl/7.68.0\n");
     }
 
 

@@ -29,7 +29,7 @@ public class MainClass {
         mainClass.parseUrl(args[args.length-1]);
 //        client.printBody(url, port, path, false);
 
-            client.printGetBody(jargs.getRequest() ,jargs.isHeader(), jargs.getAppendHeader());
+            client.printBody(jargs.getRequest() ,jargs.isHeader(), jargs.getAppendHeader(),jargs.getPostContents());
 
     }
 
