@@ -31,10 +31,13 @@ public class MainClass {
 //        client.printBody(url, port, path, false);
 
         if(Objects.equals(jargs.getRequest(),"GET")){
-            client.printBody(url, port, path, false);
+            client.printBody(url, port, path, jargs.isHeader(), null);
         }
         if(jargs.isHeader()){
-            client.printBody(url, port, path, true);
+            client.printBody(url, port, path, jargs.isHeader(), null);
+        }
+        if(jargs.getAppendHeader() != null){
+            client.printBody(url, port, path, jargs.isHeader(), jargs.getAppendHeader());
         }
 
 
