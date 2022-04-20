@@ -1,15 +1,41 @@
 package com.nhnacademy.scurlproject;
 
+import com.nhnacademy.scurlproject.args.Args;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.Socket;
-import java.net.SocketAddress;
+import java.util.Objects;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class Client {
-    public void ToDo1(String ToDo2) throws IOException {
-        Socket socket = new Socket(ToDo2,80);
+    private static final Log log = LogFactory.getLog(Client.class);
 
+    public void printBody(String url, int port, String path,boolean isHeader) throws IOException {
+        String line;
+        Args args = new Args();
+        Socket socket = new Socket(url,port);
+        DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+        DataInputStream in = new DataInputStream(socket.getInputStream());
 
+        out.writeBytes("GET /" + path +" HTTP/1.1\nHost:" + url + "\nUser-Agent: curl/7.68.0\n\n");
+        out.flush();
 
+        try(BufferedReader read = new BufferedReader(new InputStreamReader(in))){
+            while((line = read.readLine()) != null) {
+                if(Objects.equals(line,"{")){
+                    isHeader = true;
+                }
+                if(isHeader){
+                    log.info(line);
+                }
 
+            }
+        }
     }
+
+
 }
