@@ -3,6 +3,7 @@ package com.nhnacademy.scurlproject.args;
 import com.beust.jcommander.Parameter;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 public class Args {
     @Parameter(names = "-X", description = "signiture of request")
@@ -13,6 +14,10 @@ public class Args {
     private List<String> appendHeader = new ArrayList<>();
     @Parameter(names = "-d", description = "POST")
     private String postContents;
+    @Parameter(names = "-L", description = "Redirect")
+    private boolean redirecting;
+
+    @RequestMapping("redirect")
 
 
     public String getRequest() {

@@ -15,7 +15,6 @@ public class MainClass {
 
     public static void main(String[] args) throws IOException {
         MainClass mainClass = new MainClass();
-        Client client = new Client();
         Args jargs = new Args();
 
         //        if(args.length<1){
@@ -26,11 +25,12 @@ public class MainClass {
             .addObject(jargs)
             .build()
             .parse(Arrays.copyOf(args,args.length-1));
+
         mainClass.parseUrl(args[args.length-1]);
 //        client.printBody(url, port, path, false);
 
+        Client client = new Client();
             client.printBody(jargs.getRequest() ,jargs.isHeader(), jargs.getAppendHeader(),jargs.getPostContents());
-
     }
 
     private void parseUrl(String arg){
@@ -47,7 +47,12 @@ public class MainClass {
             port = 443;
         }
         path = temp[3];
-
+        if(temp.length>4){
+            int length = temp.length;
+            for (int i = 4; i <= length-1; i++) {
+               path = path.concat("/"+temp[i]);
+            }
+        }
     }
 
     public static String getUrl() {
