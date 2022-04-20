@@ -4,7 +4,6 @@ import com.beust.jcommander.JCommander;
 import com.nhnacademy.scurlproject.args.Args;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Objects;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -30,17 +29,7 @@ public class MainClass {
         mainClass.parseUrl(args[args.length-1]);
 //        client.printBody(url, port, path, false);
 
-        if(Objects.equals(jargs.getRequest(),"GET")){
-            client.printBody(url, port, path, jargs.isHeader(), null);
-        }
-        if(jargs.isHeader()){
-            client.printBody(url, port, path, jargs.isHeader(), null);
-        }
-        if(jargs.getAppendHeader() != null){
-            client.printBody(url, port, path, jargs.isHeader(), jargs.getAppendHeader());
-        }
-
-
+            client.printGetBody(jargs.getRequest() ,jargs.isHeader(), jargs.getAppendHeader());
 
     }
 
@@ -59,5 +48,17 @@ public class MainClass {
         }
         path = temp[3];
 
+    }
+
+    public static String getUrl() {
+        return url;
+    }
+
+    public static int getPort() {
+        return port;
+    }
+
+    public static String getPath() {
+        return path;
     }
 }
